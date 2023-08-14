@@ -16,11 +16,11 @@ import com.example.myapplication.R;
 import com.example.myapplication.data.room.Point;
 import com.example.myapplication.ui.EditNoteDialogFragment;
 import com.example.myapplication.data.distance.PointListManager;
-import com.example.myapplication.ui.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -35,12 +35,18 @@ public class MapsFragment extends Fragment {
     private GoogleMap mMap;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static LatLng defaultCameraPosition = new LatLng(50.450606, 30.524798);
-
+    private CameraPosition cameraPosition;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            CameraPosition savedPosition = savedInstanceState.getParcelable("camera_position");
+            if (savedPosition != null) {
+                cameraPosition = savedPosition;
+            }
+        }
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -85,7 +91,13 @@ public class MapsFragment extends Fragment {
 
             observePoints();
             // Zoom level (2.0 = world, 15.0 = street level) -> 9
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultCameraPosition, 10.0f));
+            if (cameraPosition != null){
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+            else {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultCameraPosition, 10.0f));
+            }
+
 
             if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED &&
@@ -115,4 +127,12 @@ public class MapsFragment extends Fragment {
 
         }
     };
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mMap == null) return;
+        CameraPosition cameraPosition = mMap.getCameraPosition();
+        outState.putParcelable("camera_position", cameraPosition);
+    }
 }

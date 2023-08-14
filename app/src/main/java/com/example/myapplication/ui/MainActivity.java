@@ -11,7 +11,6 @@ import com.example.myapplication.data.distance.PointListManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
                             vm.insertLatestSavedLocation(currentLocation);
                             PointListManager.getInstance().getCurrentLocation().postValue(currentLocation);
-                            //LocationHelper.setCurrentLocation(currentLocation);
                         } else {
                             makeText("Location failure");
                         }

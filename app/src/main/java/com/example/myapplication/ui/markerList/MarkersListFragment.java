@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.data.distance.PointListManager;
 import com.example.myapplication.data.distance.PointWithDistance;
 import com.example.myapplication.databinding.FragmentDashboardBinding;
+import com.example.myapplication.ui.EditNoteDialogFragment;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class MarkersListFragment extends Fragment {
     }
 
     private void initRecyclerView(List<PointWithDistance> points) {
-        recyclerViewAdapter = new RecyclerViewAdapter(getContext(), points);
+        recyclerViewAdapter = new RecyclerViewAdapter(getContext(), points,getFragmentManager());
         recyclerView.setAdapter(recyclerViewAdapter);
 
     }
@@ -73,4 +74,6 @@ public class MarkersListFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }

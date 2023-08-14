@@ -14,13 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.App;
 import com.example.myapplication.Const;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.MainActivity;
 import com.example.myapplication.ui.EditNoteDialogFragment;
 import com.example.myapplication.ui.map.MapsFragment;
 import com.example.myapplication.data.distance.PointListManager;
@@ -30,16 +30,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
     private final LayoutInflater inflater;
     List<PointWithDistance> pointWithDistanceList;
     private boolean[] expandedArr;
     private Context context;
+    FragmentManager fragmentManager;
 
-    public RecyclerViewAdapter(Context context, List<PointWithDistance> pointWithDistanceList) {
+    public RecyclerViewAdapter(Context context, List<PointWithDistance> pointWithDistanceList, FragmentManager fragmentManager) {
         this.inflater = LayoutInflater.from(context);
         this.pointWithDistanceList = pointWithDistanceList;
         this.context = context;
+        this.fragmentManager = fragmentManager;
         expandedArr = new boolean[pointWithDistanceList.size()];
         Arrays.fill(expandedArr, false);
     }
@@ -103,7 +104,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             noteEdit = view.findViewById(R.id.rvNoteEdit);
 
             route.setOnClickListener(v -> onRouteClick(getAdapterPosition()));
-            noteEdit.setOnClickListener(v -> onNoteEditorClick(getAdapterPosition()));
+            noteEdit.setOnClickListener(v -> onNoteEditClick(getAdapterPosition()));
 
             view.setOnClickListener(v -> onItemViewClick(getAdapterPosition()));
         }
@@ -137,12 +138,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    private void onNoteEditorClick(int position) {
-        if (position == RecyclerView.NO_POSITION) return;
-        EditNoteDialogFragment dialogFragment = new EditNoteDialogFragment(pointWithDistanceList.get(position).getPoint());
-        dialogFragment.show(dialogFragment.requireFragmentManager(), "CustomDialogFragment");
-    }
-
     private void onItemViewClick(int position) {
         if (position == RecyclerView.NO_POSITION) return;
 
@@ -151,10 +146,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyItemChanged(position);
     }
 
+    private void onNoteEditClick(int position){
+        EditNoteDialogFragment dialogFragment = new EditNoteDialogFragment(pointWithDistanceList.get(position).getPoint());
+        dialogFragment.show(fragmentManager, "CustomDialogFragment");
+    }
     public void changeDataSet(List<PointWithDistance> pointWithDistanceList) {
         this.pointWithDistanceList = pointWithDistanceList;
         Arrays.fill(expandedArr, false);
         notifyDataSetChanged();
     }
-
 }
