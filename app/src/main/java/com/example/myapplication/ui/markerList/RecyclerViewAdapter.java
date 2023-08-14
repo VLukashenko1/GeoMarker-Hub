@@ -131,7 +131,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             if (mapIntent.resolveActivity(App.getInstance().getPackageManager()) != null) {
-                App.getInstance().startActivity(mapIntent);
+                context.startActivity(mapIntent);
             } else {
                 Toast.makeText(context,"it is not possible to build a route", Toast.LENGTH_SHORT).show();
             }
