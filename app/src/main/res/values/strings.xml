@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Location hub</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Point list</string>
+
+    <string name="mainActivityDistanceInfoTV">Enter distance for points that you want to present the distance at which you want to see the marks.(If 0 - will show all points)</string>
+    <string name="map">map</string>
+    <string name="distance_to_this_point">Distance to this point </string>
+    <string name="permission_deny">Permission to location deny</string>
+    <string name="enter_notate">Enter notate</string>
+    <string name="name">name</string>
+    <string name="distance">distance</string>
+    <string name="note">note</string>
+    <string name="enter_a_number">enter a number</string>
+    <string name="apply">apply</string>
+    <string name="app_need_access_to_location_for_work">App need access to location for work</string>
+
+</resources>
